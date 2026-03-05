@@ -891,6 +891,7 @@ class DetailedExplanationAction(BaseAction):
         try:
             send_delay = self.get_config("detailed_explanation.send_delay", 1.5)
             show_progress = self.get_config("detailed_explanation.show_progress", True)
+            enable_typing = self.get_config("detailed_explanation.enable_typing", True)
             start_hint_enabled = self.get_config("detailed_explanation.show_start_hint", True)
             
             for i, segment in enumerate(segments):
@@ -905,7 +906,7 @@ class DetailedExplanationAction(BaseAction):
                     segment_with_progress,
                     set_reply=(i == 0 and not start_hint_enabled),
                     reply_message=self.action_message if (i == 0 and not start_hint_enabled) else None,
-                    typing=(i > 0),
+                    typing=(i > 0 and enable_typing),
                 )
                 
                 # 如果不是最后一段，等待一段时间
@@ -1246,6 +1247,11 @@ class DetailedExplanationPlugin(BasePlugin):
             "max_segments": ConfigField(type=int, default=4, description="最大分段数"),
             "send_delay": ConfigField(type=float, default=1.5, description="分段间发送延迟"),
             "show_progress": ConfigField(type=bool, default=True, description="是否显示进度提示"),
+            "enable_typing": ConfigField(
+                type=bool,
+                default=True,
+                description="是否启用逐段typing效果（从第2段开始模拟打字延迟，关闭可显著降低段间等待）",
+            ),
             "show_start_hint": ConfigField(type=bool, default=True, description="是否显示开始提示"),
             "start_hint_message": ConfigField(type=str, default="让我详细说明一下...", description="开始提示消息"),
             "activation_probability": ConfigField(type=float, default=0.1, description="激活概率"),

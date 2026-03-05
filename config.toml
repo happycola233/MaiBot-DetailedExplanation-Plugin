@@ -44,6 +44,9 @@ send_delay = 1.5
 # 是否显示进度提示
 show_progress = true
 
+# 是否启用逐段typing效果（从第2段开始模拟打字延迟；关闭可显著降低段间等待）
+enable_typing = true
+
 # 是否显示开始提示
 show_start_hint = true
 
